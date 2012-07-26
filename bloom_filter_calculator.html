@@ -1,8 +1,75 @@
 <!DOCTYPE html>
 
 <html>
-<head><title>Bloom Filter Parameter Calculator</title></head>
+<head>
+<title>Bloom Filter Parameter Calculator</title>
 
-<body>
+<script>
+
+function refreshCalculation()
+{
+	var k = document.getElementById("k").value;
+	var m = document.getElementById("m").value;
+	var n = document.getElementById("n").value;
+	
+	var fpr = falsePositiveRate(k,m,n);
+	var fpra = falsePositiveRateApprox(k,m,n);
+	var delta = (fpr-fpra)*100/fpr;
+	
+	document.getElementById("output").innerHTML = 
+		"False positive rate: "+fpr
+	   +"<br>"
+	   +"False positive rate (by approximation) is: "+fpra
+	   +"<br>"
+	   +"Error in approximation: "+ delta+"%";
+}
+
+function falsePositiveRate(k,m,n)
+{
+	return Math.pow(1-Math.pow(1-(1/m),k*n),k);
+}
+
+function falsePositiveRateApprox(k,m,n)
+{
+	return Math.pow(1-Math.exp(-(k*n)/m),k);
+}
+
+</script>
+
+</head>
+
+<body onload="refreshCalculation();">
+
+<div id="falsePoitiveCalculator">
+	<h2>A calculator for the error rate in a Bloom filter.</h2>
+	<p> This calculator uses the formulae below to calculate the probability that a query of a Bloom filter erroneously claims that an element is in the set. The formula on the left hand side is exact; the formula on the right is an approximation.
+	</p>
+	
+	<img src="http://upload.wikimedia.org/wikipedia/en/math/2/1/8/2180ac79da81e5b3721963b4d80cf5a6.png">
+	
+	<hr>
+	
+	<table>
+	<tr> 
+		<td> How many hashes? (k): </td> 
+		<td> <input id="k" type="number" min="1" onchange="refreshCalculation();" value="1"> </td>
+	</tr>
+	
+	<tr> 
+		<td> How many bits? (m): </td> 
+		<td> <input id="m" type="number" min="1" onchange="refreshCalculation();" value="1"> </td>
+	</tr>
+	
+	<tr> 
+		<td> How many elements? (n): </td> 
+		<td> <input id="n" type="number" min="0" onchange="refreshCalculation();" value="1"> </td>
+	</tr>
+	
+	</table>
+	
+	<p id="output"></p>
+</div>
+
 </body>
+
 </html>
