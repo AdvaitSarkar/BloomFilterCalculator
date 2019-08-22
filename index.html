@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Online Bloom Filter Calculator</title>
+
+<script>
+
+function refreshCalculation()
+{
+	var k = document.getElementById("k").value;
+	var m = document.getElementById("m").value;
+	var n = document.getElementById("n").value;
+	
+	var fpr = falsePositiveRate(k,m,n);
+	var fpra = falsePositiveRateApprox(k,m,n);
+	var delta = (fpr-fpra)*100/fpr;
+	
+	document.getElementById("output").innerHTML = 
+		"False positive rate: "+fpr.toFixed(5)
+	   +"<br>"
+	   +"False positive rate (by approximation) is: "+fpra.toFixed(5)
+	   +"<br>"
+	   +"Error in approximation: "+ delta.toFixed(5)+"%";
+}
+
+function falsePositiveRate(k,m,n)
+{
+	return Math.pow(1-Math.pow(1-(1/m),k*n),k);
+}
+
+function falsePositiveRateApprox(k,m,n)
+{
+	return Math.pow(1-Math.exp(-(k*n)/m),k);
+}
+
+</script>
+
+<style>
+	body {
+		max-width: 50rem;
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		margin: auto;
+	}
+</style>
+
+</head>
+
+<body onload="refreshCalculation();">
+
+
+<h1>A calculator for the false positive error rate in a Bloom filter</h1>
+
+<table>
+<tr> 
+	<td> How many hashes? (k): </td> 
+	<td> <input id="k" type="number" min="1" onchange="refreshCalculation();" value="1"> </td>
+</tr>
+
+<tr> 
+	<td> How many bits? (m): </td> 
+	<td> <input id="m" type="number" min="1" onchange="refreshCalculation();" value="1"> </td>
+</tr>
+
+<tr> 
+	<td> How many elements? (n): </td> 
+	<td> <input id="n" type="number" min="0" onchange="refreshCalculation();" value="1"> </td>
+</tr>
+
+</table>
+
+<p id="output"></p>
+
+<hr>
+<p>A bloom filter is a probabilistic data structure that can be used to test whether an item is a member of a set (read more on <a href="https://en.wikipedia.org/wiki/Bloom_filter">Wikipedia</a>).</p>
+
+<p>For each item you'd like to "store" in the set, you apply k different <a href="https://en.wikipedia.org/wiki/Hash_function">hash functions</a> to the item. Each of these k hashes should produce a number from 1 to n, which can be used as an index into a bit array of length n. Each of the k positions within the bit array are set to 1.</p>
+	
+<p>In order to test whether an item is a member of the set, the same k hash functions are used to generate array indices from this item. If any of these positions in the bit array is <em>not</em> set to 1, the item is definitely not part of the set. If all of the positions are set to 1, then the item <em>may</em> be part of the set with certain probability, but there is a chance that it may not be, because those indices might have been set to 1 as a result of some other items being added to the set. The Bloom filter therefore trades off the space required to store an entire set for exact set membership queries, for a small quantifiable likelihood of false positives.</p>
+
+<p>This calculator uses the following formulae to calculate the probability that a query of a Bloom filter erroneously claims that an element is in the set. The formula on the left hand side is exact; the formula on the right is an approximation.
+</p>
+
+<img src="bloom_filter_error_formula.png">
+
+<br><br>
+<hr>
+<footer>This page is maintained by <a href="https://advait.org">Advait Sarkar</a>.</footer>
+
+</body>
+
+</html>
