@@ -17,9 +17,9 @@ function refreshCalculation()
 	var delta = (fpr-fpra)*100/fpr;
 	
 	document.getElementById("output").innerHTML = 
-		"False positive rate: "+fpr.toFixed(5)
+		"False positive rate (exact): "+fpr.toFixed(5)
 	   +"<br>"
-	   +"False positive rate (by approximation) is: "+fpra.toFixed(5)
+	   +"False positive rate (approximation): "+fpra.toFixed(5)
 	   +"<br>"
 	   +"Error in approximation: "+ delta.toFixed(5)+"%";
 }
@@ -38,6 +38,7 @@ function falsePositiveRateApprox(k,m,n)
 
 <style>
 	body {
+		background-color: #fff9e6;
 		max-width: 50rem;
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 		margin: auto;
@@ -54,17 +55,17 @@ function falsePositiveRateApprox(k,m,n)
 <table>
 <tr> 
 	<td> How many hashes? (k): </td> 
-	<td> <input id="k" type="number" min="1" onchange="refreshCalculation();" value="1"> </td>
+	<td> <input id="k" type="number" min="1" onchange="refreshCalculation();" value="5"> </td>
 </tr>
 
 <tr> 
-	<td> How many bits? (m): </td> 
-	<td> <input id="m" type="number" min="1" onchange="refreshCalculation();" value="1"> </td>
+	<td> How many bits in the array? (m): </td> 
+	<td> <input id="m" type="number" min="1" onchange="refreshCalculation();" value="100"> </td>
 </tr>
 
 <tr> 
-	<td> How many elements? (n): </td> 
-	<td> <input id="n" type="number" min="0" onchange="refreshCalculation();" value="1"> </td>
+	<td> How many elements in the set? (n): </td> 
+	<td> <input id="n" type="number" min="0" onchange="refreshCalculation();" value="10"> </td>
 </tr>
 
 </table>
@@ -74,7 +75,7 @@ function falsePositiveRateApprox(k,m,n)
 <hr>
 <p>A bloom filter is a probabilistic data structure that can be used to test whether an item is a member of a set (read more on <a href="https://en.wikipedia.org/wiki/Bloom_filter">Wikipedia</a>).</p>
 
-<p>For each item you'd like to "store" in the set, you apply k different <a href="https://en.wikipedia.org/wiki/Hash_function">hash functions</a> to the item. Each of these k hashes should produce a number from 1 to n, which can be used as an index into a bit array of length n. Each of the k positions within the bit array are set to 1.</p>
+<p>For each item you'd like to "store" in the set, you apply k different <a href="https://en.wikipedia.org/wiki/Hash_function">hash functions</a> to the item. Each of these k hashes should produce a number from 1 to m, which can be used as an index into a bit array of length m. Each of the k positions within the bit array are set to 1.</p>
 	
 <p>In order to test whether an item is a member of the set, the same k hash functions are used to generate array indices from this item. If any of these positions in the bit array is <em>not</em> set to 1, the item is definitely not part of the set. If all of the positions are set to 1, then the item <em>may</em> be part of the set with certain probability, but there is a chance that it may not be, because those indices might have been set to 1 as a result of some other items being added to the set. The Bloom filter therefore trades off the space required to store an entire set for exact set membership queries, for a small quantifiable likelihood of false positives.</p>
 
