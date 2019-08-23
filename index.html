@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>Online Bloom Filter Calculator</title>
+<title>Online Bloom filter calculator | explanation and tutorial</title>
 
 <script>
 
@@ -43,6 +43,12 @@ function falsePositiveRateApprox(k,m,n)
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 		margin: auto;
 	}
+
+	hr {
+		border: none;
+		height: 1px;
+		background-color: #ccc;
+	}
 </style>
 
 </head>
@@ -73,7 +79,8 @@ function falsePositiveRateApprox(k,m,n)
 <p id="output"></p>
 
 <hr>
-<p>A bloom filter is a probabilistic data structure that can be used to test whether an item is a member of a set (read more on <a href="https://en.wikipedia.org/wiki/Bloom_filter">Wikipedia</a>).</p>
+<h2>A tiny introduction to Bloom filters</h2>
+<p>A Bloom filter is a probabilistic data structure that can be used to test whether an item is a member of a set (read more on <a href="https://en.wikipedia.org/wiki/Bloom_filter">Wikipedia</a>).</p>
 
 <p>For each item you'd like to "store" in the set, you apply k different <a href="https://en.wikipedia.org/wiki/Hash_function">hash functions</a> to the item. Each of these k hashes should produce a number from 1 to m, which can be used as an index into a bit array of length m. Each of the k positions within the bit array are set to 1.</p>
 	
