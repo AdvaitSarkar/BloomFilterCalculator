@@ -99,7 +99,7 @@ function falsePositiveRateApprox(k,m,n)
 
 <img src="bloom_filter_error_formula_new.png">
 
-<p>In practice, Bloom's original error rate expression should still be useful enough for parameter tuning, as it is asymptotically consistent with the updated definition.</p>
+<p>In most cases, Bloom's original error rate expression is still useful for parameter tuning, as it is asymptotically consistent with the updated definition. Practical filters will have a bit array that is of vastly higher size than the number of hash functions used (that is, m >> k), making the probability of coincident indices negligible. The original expression remains a superb and easy to understand approximation.</p>
 <hr>
 <footer>This page is maintained by <a href="https://advait.org">Advait Sarkar</a>.</footer>
 
