@@ -93,7 +93,7 @@ function falsePositiveRateApprox(k,m,n)
 
 <hr>
 <h2>September 2020: a small caveat</h2>
-<p>I have recently become aware that the above expression slightly underestimates the error rate in practice. This is because Bloom's original derivation for the expression assumes that each of the k hashes selects a <em>distinct</em> position in the bit array, an assumption which is not guaranteed in most implementations. That is to say, even if you have k indepedent hashes, you usually do not have the property that running them on a given output will produce k distinct array indices.</p>
+<p>I have recently become aware that the above expression slightly underestimates the error rate in practice. This is because Bloom's original derivation for the expression assumes that each of the k hash functions selects a <em>distinct</em> position in the bit array, an assumption which is not guaranteed in most implementations. That is to say, even if you have k independent hash functions, you usually do not have the property that running them on a given input will produce k distinct array indices.</p>
 	
 <p><a href="https://gopiandcode.uk/logs/log-bloomfilters-debunked.html">A recent computer-aided proof</a> has shown that the correct expression for error rate in a bloom filter where hash outputs overlap is in fact:</p>
 
